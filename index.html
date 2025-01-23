@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cash</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+     
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center align label and input */
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 80%; /* Adjust width for responsiveness */
+            padding: 10px;
+            text-align: center; /* Center text inside the input box */
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .row {
+            display: flex;
+            justify-content: center; /* Horizontally center align */
+            align-items: center; /* Vertically center align */
+            margin-bottom: 15px;
+            gap: 10px; /* Space between elements */
+        }
+        .row input {
+            width: 60px;
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .result {
+            font-weight: bold;
+            width: 120px;
+            text-align: right;
+        }
+        .total {
+            font-size: 1.2em;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #007b00;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007b00;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button:hover {
+            background-color: #005f00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cash</h1>
+        <div class="form-group">
+            <label for="customerName">Customer Name:</label>
+            <input type="text" id="customerName" placeholder="Enter customer name">
+        </div>
+        <div class="form-group">
+            <label for="currentDate">Date:</label>
+            <input type="text" id="currentDate" disabled>
+        </div>
+        <div id="noteContainer">
+            <div class="row">
+                <span>₹500 ×</span>
+                <input type="number" id="note500" placeholder="0" oninput="calculateRow(500, 'result500')">
+                <span class="result" id="result500">₹0</span>
+            </div>
+            <div class="row">
+                <span>₹200 ×</span>
+                <input type="number" id="note200" placeholder="0" oninput="calculateRow(200, 'result200')">
+                <span class="result" id="result200">₹0</span>
+            </div>
+            <div class="row">
+                <span>₹100 ×</span>
+                <input type="number" id="note100" placeholder="0" oninput="calculateRow(100, 'result100')">
+                <span class="result" id="result100">₹0</span>
+            </div>
+            <div class="row">
+                <span>₹50 ×</span>
+                <input type="number" id="note50" placeholder="0" oninput="calculateRow(50, 'result50')">
+                <span class="result" id="result50">₹0</span>
+            </div>
+            <div class="row">
+                <span>₹20 ×</span>
+                <input type="number" id="note20" placeholder="0" oninput="calculateRow(20, 'result20')">
+                <span class="result" id="result20">₹0</span>
+            </div>
+            <div class="row">
+                <span>₹10 ×</span>
+                <input type="number" id="note10" placeholder="0" oninput="calculateRow(10, 'result10')">
+                <span class="result" id="result10">₹0</span>
+            </div>
+        </div>
+        <button type="button" onclick="calculateTotal()">Calculate Total</button>
+        <div class="total" id="totalAmount">Total: ₹0</div>
+    </div>
+
+    <script>
+        // Real-time date
+        document.getElementById('currentDate').value = new Date().toLocaleDateString();
+
+        // Function to format numbers with commas
+        function formatNumber(number) {
+            return number.toLocaleString('en-IN');
+        }
+
+        // Calculate total for each denomination
+        function calculateRow(denomination, resultId) {
+            const count = document.getElementById(`note${denomination}`).value || 0;
+            const result = denomination * count;
+            document.getElementById(resultId).innerText = `₹${formatNumber(result)}`;
+            calculateTotal();
+        }
+
+        // Calculate grand total
+        function calculateTotal() {
+            const denominations = [500, 200, 100, 50, 20, 10];
+            let total = 0;
+            denominations.forEach(denomination => {
+                const count = parseInt(document.getElementById(`note${denomination}`).value) || 0;
+                total += denomination * count;
+            });
+            document.getElementById('totalAmount').innerText = `Total: ₹${formatNumber(total)}`;
+        }
+    </script>
+</body>
+</html>
